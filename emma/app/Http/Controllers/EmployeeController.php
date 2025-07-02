@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEmployeeRequest;
+use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
@@ -13,14 +14,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employee = Employee::all();
-
-        return response()->json([
-            'success' => true,
-            'msg' => 'Employees retrievly successfully',
-            'dataCount' => $employee->count(),
-            'data' => $employee->load('position', 'documents', 'laborRights', 'tags', 'reports', 'leaves', 'salaries')
-        ], 200);
+        $employees = Employee::with(['position.department'])->get();
+        return EmployeeResource::collection($employees);
     }
 
     /**
