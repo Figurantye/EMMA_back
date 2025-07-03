@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     TagController,
     LaborRightController,
     AttendanceController,
+    DashboardController,
     PositionController,
     DocumentController,
     LeaveController,
@@ -28,6 +29,8 @@ Route::apiResource('positions', PositionController::class);
 
 // Funcionários
 Route::apiResource('employees', EmployeeController::class);
+
+Route::get('/dashboard', [DashboardController::class, 'index']);
 
 // Salários
 Route::get('employees/{employee}/salaries', [SalaryController::class, 'show']);
