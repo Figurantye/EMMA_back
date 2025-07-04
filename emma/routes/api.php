@@ -13,6 +13,7 @@ use App\Http\Controllers\{
     DashboardController,
     PositionController,
     DocumentController,
+    IncidentController,
     LeaveController,
     ReportController
 };
@@ -31,6 +32,8 @@ Route::apiResource('positions', PositionController::class);
 Route::apiResource('employees', EmployeeController::class);
 
 Route::get('/dashboard', [DashboardController::class, 'index']);
+
+Route::apiResource('incidents', IncidentController::class);
 
 // Salários
 Route::get('employees/{employee}/salaries', [SalaryController::class, 'show']);

@@ -58,6 +58,9 @@ class DatabaseSeeder extends Seeder
                     \App\Models\Report::factory()->create([
                         'employee_id' => $employee->id,
                     ]);
+                    \App\Models\Incident::factory(rand(1, 2))->create([
+                        'employee_id' => $employee->id,
+                    ]);
                 });
             });
         });
