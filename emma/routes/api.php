@@ -17,6 +17,7 @@ use App\Http\Controllers\{
     LeaveController,
     ReportController
 };
+use App\Models\Position;
 use App\Models\Salary;
 
 // Rotas protegidas por autenticação (opcional, ex: Sanctum)
@@ -31,8 +32,10 @@ Route::apiResource('positions', PositionController::class);
 // Funcionários
 Route::apiResource('employees', EmployeeController::class);
 
-Route::get('/dashboard', [DashboardController::class, 'index']);
+// Dashboard
+Route::get('dashboard', [DashboardController::class, 'index']);
 
+// Incidentes
 Route::apiResource('incidents', IncidentController::class);
 
 // Salários
@@ -83,4 +86,3 @@ Route::get('employees/{employee}/reports', [ReportController::class, 'show']);
 Route::post('employees/{employee}/reports', [ReportController::class, 'store']);
 Route::put('reports/{report}', [ReportController::class, 'update']);
 Route::delete('reports/{report}', [ReportController::class, 'destroy']);
-// });
