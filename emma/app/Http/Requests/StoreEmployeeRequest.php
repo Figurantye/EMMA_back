@@ -28,10 +28,11 @@ class StoreEmployeeRequest extends FormRequest
             'email' => ['required', 'email', 'max:255', Rule::unique('employees', 'email')],
             'cpf' => ['required', 'string', 'max:15'],
             'city' => ['nullable', 'string', 'max:50'],
-            'birth_date' => ['required', 'date', 'before:today'],
-            'hire_date' => ['required', 'date', 'before_or_equals:today'],
+            'rg' => ['nullable', 'string', 'max:20'],
+            'date_of_birth' => ['required', 'date', 'before:tomorrow'],
+            'hire_date' => ['required', 'date', 'before:tomorrow'],
             'phone' => ['nullable', 'string', 'max:255', 'regex:/^[\d\s\-\+\(\)]+$/'],
-            'status' => ['required', Rule::in(['active', 'inactive', 'suspended'])],
+            'employment_status' => ['required', Rule::in(['active', 'inactive', 'suspended'])],
             'position_id' => ['required', Rule::exists('positions', 'id')],
         ];
     }
