@@ -23,23 +23,20 @@ class StoreDocumentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'employee_id' => ['required', Rule::exists('employees', 'id')],
-            'name' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'string', 'max:255'],
-            'path' => ['required', 'string']
+            'document' => 'required|file|mimes:pdf|max:5120', // máximo 5MB
+            'name' => 'required|string|max:255',
         ];
     }
 
     public function messages()
     {
         return [
-            'employee_id.required' => 'EMPLOYEE_ID is required',
-            'employee_id.exists' => 'The selected employee does not exist',
-            'name.required' => 'NAME is required',
-            'name.max:255' => 'NAME Max length: 255',
-            'type.required' => 'TYPE is required',
-            'type.max:255' => 'TYPE Max length: 255',
-            'path.required' => 'PATH is required'
+            'document.required' => 'O arquivo PDF é obrigatório.',
+            'document.file' => 'O arquivo deve ser um arquivo válido.',
+            'document.mimes' => 'O arquivo deve ser um PDF.',
+            'document.max' => 'O arquivo não pode ser maior que 5MB.',
+            'name.required' => 'O nome do documento é obrigatório.',
+            'name.max' => 'O nome do documento não pode exceder 255 caracteres.',
         ];
     }
 }

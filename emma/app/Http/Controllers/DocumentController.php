@@ -35,10 +35,19 @@ class DocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDocumentRequest $request)
+    public function store(StoreDocumentRequest $request, Employee $employee)
     {
         try {
-            $document = Document::create($request->validated());
+            $file = $request->file('document');
+
+            $path = $file->store('documents', 'public');
+
+            $document = Document::create([
+                'employee_id' => $employee->id,
+                'name' => $request->name,
+                'type' => 'pdf',
+                'path' => $path,
+            ]);
         } catch (\Exception $error) {
             return response()->json([
                 'success' => false,

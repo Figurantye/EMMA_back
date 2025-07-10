@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEmployeeRequest;
+use App\Http\Requests\UpdateEmployeeRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -73,7 +74,7 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreEmployeeRequest $request, string $id)
+    public function update(UpdateEmployeeRequest $request, string $id)
     {
         try {
             $employee = Employee::findOrFail($id);
