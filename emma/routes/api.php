@@ -19,9 +19,6 @@ use App\Http\Controllers\{
 };
 use App\Models\Position;
 use App\Models\Salary;
-
-// Rotas protegidas por autenticação (opcional, ex: Sanctum)
-// Route::middleware('auth:sanctum')->group(function () {
     
 // Departamentos
 Route::apiResource('departments', DepartmentController::class);
@@ -63,11 +60,11 @@ Route::put('labor-rights/{labor_right}', [LaborRightController::class, 'update']
 Route::delete('labor-rights/{labor_right}', [LaborRightController::class, 'destroy']);
 
 // Tags
+Route::get('tags', [TagController::class, 'index']);
 Route::get('employees/{employee}/tags', [TagController::class, 'show']);
 Route::post('employees/{employee}/tags', [TagController::class, 'store']);
 Route::put('tags/{tag}', [TagController::class, 'update']);
 Route::delete('tags/{tag}', [TagController::class, 'destroy']);
-
 
 // Documents
 Route::get('employees/{employee}/documents', [DocumentController::class, 'show']);

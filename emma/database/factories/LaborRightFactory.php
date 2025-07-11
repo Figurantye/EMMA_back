@@ -23,7 +23,7 @@ class LaborRightFactory extends Factory
             'transport' => $this->faker->boolean(50),
             'meal_voucher' => $this->faker->boolean(50),
             'food_voucher' => $this->faker->boolean(50),
-            'employee_id' => Employee::factory(), // ou passe diretamente no seeder
+            'employee_id' => Employee::factory(),
         ];
     }
 }

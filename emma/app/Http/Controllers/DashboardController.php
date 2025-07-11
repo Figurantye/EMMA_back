@@ -26,7 +26,7 @@ class DashboardController extends Controller
         // Férias Pendentes
         $pendingLeaves = Leave::where('status', 'pending')->count();
 
-        // Aniversariantes do mês atual
+        // Aniversariantes do mês
         $birthdays = Employee::whereMonth('date_of_birth', now()->month)->count();
 
         // Funcionários por departamento

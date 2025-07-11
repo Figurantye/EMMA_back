@@ -13,9 +13,26 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::with(['position.department'])->get();
+        $query = Employee::with(['position.department', 'tags']);
+
+        if ($request->has('name') && $request->name !== '') {
+            $query->where(function ($q) use ($request) {
+                $q->where('first_name', 'like', '%' . $request->name . '%')
+                  ->orWhere('last_name', 'like', '%' . $request->name . '%');
+            });
+        }
+
+        // Filtro por tag (por conteúdo da tag)
+        if ($request->has('tag') && $request->tag !== '') {
+            $query->whereHas('tags', function ($q) use ($request) {
+                $q->where('content', 'like', '%' . $request->tag . '%');
+            });
+        }
+
+        $employees = $query->get();
+
         return EmployeeResource::collection($employees);
     }
 

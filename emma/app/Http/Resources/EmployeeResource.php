@@ -20,7 +20,8 @@ class EmployeeResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'hire_date' => $this->hire_date,
-            'position' => new PositionResource($this->whenLoaded('position')), // carrega position se estiver carregado
+            'position' => new PositionResource($this->whenLoaded('position')),
+            'tags' => $this->tags
         ];
     }
 }
