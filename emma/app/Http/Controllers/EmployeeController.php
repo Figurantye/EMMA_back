@@ -17,17 +17,27 @@ class EmployeeController extends Controller
     {
         $query = Employee::with(['position.department', 'tags']);
 
-        if ($request->has('name') && $request->name !== '') {
-            $query->where(function ($q) use ($request) {
-                $q->where('first_name', 'like', '%' . $request->name . '%')
-                  ->orWhere('last_name', 'like', '%' . $request->name . '%');
+        if ($request->filled('name')) {
+            $name = $request->input('name');
+            $query->where(function ($q) use ($name) {
+                $q->where('first_name', 'like', "%$name%")
+                    ->orWhere('last_name', 'like', "%$name%");
             });
         }
 
-        // Filtro por tag (por conteúdo da tag)
-        if ($request->has('tag') && $request->tag !== '') {
+        if ($request->filled('position_id')) {
+            $query->where('position_id', $request->input('position_id'));
+        }
+
+        if ($request->filled('department_id')) {
+            $query->whereHas('position.department', function ($q) use ($request) {
+                $q->where('id', $request->input('department_id'));
+            });
+        }
+
+        if ($request->filled('tag_id')) {
             $query->whereHas('tags', function ($q) use ($request) {
-                $q->where('content', 'like', '%' . $request->tag . '%');
+                $q->where('id', $request->input('tag_id'));
             });
         }
 
@@ -114,7 +124,7 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(String $id)
+    public function destroy(string $id)
     {
         try {
             $employee = Employee::findOrFail($id);

@@ -1,25 +1,12 @@
 <?php
 
-use App\Http\Controllers\AbsenceController;
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\LaborRightController;
-use App\Http\Controllers\SalaryController;
-use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\AuthController;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+Route::middleware(['web'])->group(function () {
+    Route::get('/sanctum/csrf-cookie', fn() => response()->json(['csrf' => csrf_token()]));
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', [AuthController::class, 'user']);
 });
-
-
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
