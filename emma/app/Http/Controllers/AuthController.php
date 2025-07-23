@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Session;
+
 
 class AuthController extends Controller
 {
@@ -40,18 +42,19 @@ class AuthController extends Controller
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required']
+            'password' => ['required'],
         ]);
 
-        // Tenta autenticar com as credenciais fornecidas
         if (!Auth::attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => ['As credenciais estão incorretas.'],
             ]);
         }
 
-        // Regenera o ID da sessão para evitar fixation attacks
-        $request->session()->regenerate();
+        // Invalida a sessão anterior e gera uma nova
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        $request->session()->regenerate(); // este é o mais importante
 
         return response()->json(['message' => 'Login realizado com sucesso']);
     }
@@ -69,10 +72,10 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        // Logout da sessão guard padrão web
         Auth::guard('web')->logout();
 
-        // Invalida sessão e regenera token CSRF
+        // Limpa tudo
+        Session::flush();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
