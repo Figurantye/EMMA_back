@@ -78,7 +78,3 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('reports/{report}', [ReportController::class, 'update']);
     Route::delete('reports/{report}', [ReportController::class, 'destroy']);
 });
-
-Route::middleware('auth:sanctum')->get('/user', function () {
-    return request()->user();
-});
