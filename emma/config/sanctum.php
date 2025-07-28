@@ -56,6 +56,7 @@ return [
     | See: https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning
     |
 
+    */
 
     'token_prefix' => env('SANCTUM_TOKEN_PREFIX', ''),
 
@@ -68,7 +69,6 @@ return [
     | customize some of the middleware Sanctum uses while processing the
     | request. You may change the middleware listed below as required.
     |
-
 
     */
     'middleware' => [
