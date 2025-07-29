@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('salaries', function (Blueprint $table) {
-            $table->id()->primary();;
+            $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 10, 2);
             $table->date('start_date');

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('leaves', function (Blueprint $table) {
-            $table->id()->primary();;
+            $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->enum('type', ['vacation', 'medical', 'unpaid', 'other']);
             $table->text('reason')->nullable();
