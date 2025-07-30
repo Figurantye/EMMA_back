@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('absences', function (Blueprint $table) {
-            $table->id()->primary();
+            $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->date('date');
             $table->enum('reason', ['unjustified', 'medical', 'personal']);

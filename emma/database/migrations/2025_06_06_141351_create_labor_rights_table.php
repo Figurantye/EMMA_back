@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('labor_rights', function (Blueprint $table) {
-            $table->id()->primary();
+            $table->id();
             $table->string('contract_type');
             $table->string('workload');
             $table->string('is_unionized')->default(false);
