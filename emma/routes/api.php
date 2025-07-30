@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\{
     EmployeeController,
     DepartmentController,
@@ -18,16 +20,22 @@ use App\Http\Controllers\{
     ReportController
 };
 
-Route::middleware('auth:sanctum')->group(function () {
 
+Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle']);
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
+
+
+Route::middleware(['auth'])->group(function () {
+    
+    // Dashboard
+    Route::get('dashboard', [DashboardController::class, 'index']);
+    
     // Recursos principais
     Route::apiResource('employees', EmployeeController::class);
     Route::apiResource('departments', DepartmentController::class);
     Route::apiResource('positions', PositionController::class);
     Route::apiResource('incidents', IncidentController::class);
 
-    // Dashboard
-    Route::get('dashboard', [DashboardController::class, 'index']);
 
     // Salários
     Route::get('employees/{employee}/salaries', [SalaryController::class, 'show']);
@@ -77,4 +85,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('employees/{employee}/reports', [ReportController::class, 'store']);
     Route::put('reports/{report}', [ReportController::class, 'update']);
     Route::delete('reports/{report}', [ReportController::class, 'destroy']);
+});
+
+Route::middleware(['auth'])->get('/user', function (Request $request) {
+    return $request->user();
 });
