@@ -23,6 +23,7 @@ return [
         'logout',
         'register',
         'user',
+        'auth/google/*'
     ],
 
     'allowed_methods' => ['*'],

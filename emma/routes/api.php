@@ -25,7 +25,7 @@ Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirectToGoo
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     
     // Dashboard
     Route::get('dashboard', [DashboardController::class, 'index']);
@@ -93,6 +93,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('positions/{position}', [ReportController::class, 'destroy']);
 });
 
-Route::middleware(['auth'])->get('/user', function (Request $request) {
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });

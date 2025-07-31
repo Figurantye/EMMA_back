@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+
+use App\Traits\UsesTenantConnection;
 use Illuminate\Container\Attributes\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
     use HasFactory;
+
+    protected $connection = 'mysql';
 
     protected $fillable = [
         'first_name', 'last_name', 'email', 'phone', 'cpf', 'rg',
