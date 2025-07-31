@@ -85,6 +85,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('employees/{employee}/reports', [ReportController::class, 'store']);
     Route::put('reports/{report}', [ReportController::class, 'update']);
     Route::delete('reports/{report}', [ReportController::class, 'destroy']);
+
+    // Positions
+    Route::get('positions/{position}', action: [ReportController::class, 'show']);
+    Route::post('positions/{department}', [ReportController::class, 'store']);
+    Route::put('positions/{position}', [ReportController::class, 'update']);
+    Route::delete('positions/{position}', [ReportController::class, 'destroy']);
 });
 
 Route::middleware(['auth'])->get('/user', function (Request $request) {
