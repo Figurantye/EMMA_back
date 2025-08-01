@@ -10,12 +10,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Session;
 
-
 class AuthController extends Controller
 {
-    /**
-     * Registra um novo usuário
-     */
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -33,13 +29,11 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
+        $request->session()->regenerate();
 
         return response()->json(['message' => 'Usuário registrado com sucesso'], 201);
     }
 
-    /**
-     * Realiza login do usuário
-     */
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -53,34 +47,26 @@ class AuthController extends Controller
             ]);
         }
 
-        // Invalida a sessão anterior e gera uma nova
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        $request->session()->regenerate(); // este é o mais importante
+        $request->session()->regenerate(); // suficiente para iniciar nova sessão
 
         return response()->json(['message' => 'Login realizado com sucesso']);
     }
 
-    /**
-     * Retorna o usuário autenticado
-     */
     public function user(Request $request)
     {
         return response()->json($request->user());
     }
 
-    /**
-     * Realiza logout do usuário atual
-     */
     public function logout(Request $request)
     {
-        Auth::guard('web')->logout();
+        Auth::logout();
 
-        // Limpa tudo
         Session::flush();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Logout realizado com sucesso']);
+        $request->user()->currentAccessToken()->delete();
+
+
     }
 }

@@ -17,13 +17,24 @@ use App\Http\Controllers\{
     DocumentController,
     IncidentController,
     LeaveController,
-    ReportController
+    ReportController,
+    AuthorizedEmailController
 };
 
 
+// ROTAS DE AUTENTICAÇÃO GOOGLE
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle']);
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 
+// ROTA PARA TESTAR LOGIN COM TOKEN (após salvar localmente)
+Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {
+    return $request->user();
+});
+
+Route::post('/logout', function (Request $request) {
+    $request->user()->currentAccessToken()->delete();
+    return response()->json(['message' => 'Logout realizado com sucesso.']);
+})->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
     
@@ -35,8 +46,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('departments', DepartmentController::class);
     Route::apiResource('positions', PositionController::class);
     Route::apiResource('incidents', IncidentController::class);
-
-
+    
+    //Checklist
+    Route::apiResource('checklist-tasks', ChecklistTaskController::class);
+    Route::get('employees/{employee}/onboarding-checklist', [OnboardingChecklistController::class, 'show']);
+    Route::put('employee-checklist-status/{employeeChecklistStatus}', [EmployeeChecklistStatusController::class, 'update']);
+    
     // Salários
     Route::get('employees/{employee}/salaries', [SalaryController::class, 'show']);
     Route::post('employees/{employee}/salaries', [SalaryController::class, 'store']);
@@ -85,8 +100,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('employees/{employee}/reports', [ReportController::class, 'store']);
     Route::put('reports/{report}', [ReportController::class, 'update']);
     Route::delete('reports/{report}', [ReportController::class, 'destroy']);
-});
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+    Route::get('/authorized-emails', [AuthorizedEmailController::class, 'index']);
+    Route::post('/authorized-emails', [AuthorizedEmailController::class, 'store']);
+    Route::delete('/authorized-emails/{id}', [AuthorizedEmailController::class, 'destroy']);
 });

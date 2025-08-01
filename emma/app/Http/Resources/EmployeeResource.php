@@ -31,10 +31,14 @@ class EmployeeResource extends JsonResource
             // Relações
             'position' => new PositionResource($this->whenLoaded('position')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
-
-            // Extras se desejar no futuro
-            // 'labor_rights' => LaborRightResource::collection($this->whenLoaded('laborRights')),
-            // 'documents' => DocumentResource::collection($this->whenLoaded('documents')),
+            'labor_rights' => LaborRightResource::collection($this->whenLoaded('laborRights')),
+            'documents' => DocumentResource::collection($this->whenLoaded('documents')),
+            'reports' => ReportsResource::collection($this->whenLoaded('reports')),
+            'leaves' => LeavesResource::collection($this->whenLoaded('leaves')),
+            'absences' => AbsencesResource::collection($this->whenLoaded('absences')),
+            'attendances' => AttendancesResource::collection($this->whenLoaded('attendances')),
+            'salaries' => SalariesResource::collection($this->whenLoaded('salaries')),
+            
         ];
     }
 }

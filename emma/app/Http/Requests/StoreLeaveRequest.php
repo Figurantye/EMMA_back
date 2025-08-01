@@ -25,7 +25,7 @@ class StoreLeaveRequest extends FormRequest
         return [
             'employee_id' => ['required', Rule::exists('employees', 'id')],
             'type' => ['required', Rule::in(['vacation', 'medical', 'unpaid', 'other'])],
-            'reson' => ['nullable', 'string', 'max:255'],
+            'reason' => ['nullable', 'string', 'max:255'],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date'],
             'status' => ['required', Rule::in(['pending', 'approved', 'rejected'])]

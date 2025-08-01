@@ -64,7 +64,7 @@ class EmployeeController extends Controller
         } catch (\Exception $error) {
             return response()->json([
                 'success' => false,
-                'msg' => 'Erro ocorred while sending employee',
+                'msg' => 'Error occurred while sending employee',
                 'error' => $error->getMessage()
             ], 500);
         }

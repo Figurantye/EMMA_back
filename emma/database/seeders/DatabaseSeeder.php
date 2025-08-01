@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
         ]);
         */
 
+        $this->call(AuthorizedEmailsSeeder::class,);
+
         \App\Models\Department::factory(3)->create()->each(function ($department) {
             \App\Models\Position::factory(2)->create([
                 'department_id' => $department->id,
