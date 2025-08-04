@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\checklist_tasks;
+use App\Models\ChecklistTasks;
 use Illuminate\Http\Request;
 
 class ChecklistTasksController extends Controller
@@ -12,7 +12,7 @@ class ChecklistTasksController extends Controller
      */
     public function index()
     {
-        return ChecklistTask::orderBy('order')->get();
+        return ChecklistTasks::orderBy('order')->get();
     }
 
     /**
@@ -34,7 +34,7 @@ class ChecklistTasksController extends Controller
             'order' => 'nullable|integer',
         ]);
 
-        $task = ChecklistTask::create($data);
+        $task = ChecklistTasks::create($data);
 
         return response()->json($task, 201);
     }
@@ -42,15 +42,15 @@ class ChecklistTasksController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(checklist_tasks $checklist_tasks)
+    public function show(ChecklistTasks $checklistTasks)
     {
-        return $checklistTask;
+        return $checklistTasks;
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(checklist_tasks $checklist_tasks)
+    public function edit(ChecklistTasks $checklistTasks)
     {
         //
     }
@@ -58,7 +58,7 @@ class ChecklistTasksController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, checklist_tasks $checklist_tasks)
+    public function update(Request $request, ChecklistTasks $checklistTasks)
     {
         $data = $request->validate([
             'title' => 'sometimes|required|string|max:255',
@@ -66,17 +66,17 @@ class ChecklistTasksController extends Controller
             'order' => 'nullable|integer',
         ]);
 
-        $checklistTask->update($data);
+        $checklistTasks->update($data);
 
-        return response()->json($checklistTask);
+        return response()->json($checklistTasks);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(checklist_tasks $checklist_tasks)
+    public function destroy(ChecklistTasks $checklistTasks)
     {
-        $checklistTask->delete();
+        $checklistTasks->delete();
 
         return response()->json(null, 204);
     }

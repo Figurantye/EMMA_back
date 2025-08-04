@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('checklist_tasks', function (Blueprint $table) {
+        Schema::create('employee_checklists', function (Blueprint $table) {
             $table->id();
-            $table->string('title');           // nome da tarefa
-            $table->integer('order')->default(0); // ordem de exibição
-            $table->text('description')->nullable(); // descrição opcional
+            $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('checklist_template_id')->constrained()->cascadeOnDelete();
+            $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('checklist_tasks');
+        Schema::dropIfExists('employee_checklists');
     }
 };

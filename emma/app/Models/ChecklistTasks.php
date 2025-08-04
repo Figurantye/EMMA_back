@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ChecklistTask extends Model
+class ChecklistTasks extends Model
 {
     protected $fillable = ['title', 'description', 'order'];
 

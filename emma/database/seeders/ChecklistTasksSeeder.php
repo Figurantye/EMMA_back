@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\ChecklistTasks;
 use Illuminate\Database\Seeder;
-use App\Models\ChecklistTask;
 
 class ChecklistTasksSeeder extends Seeder
 {
@@ -38,7 +38,7 @@ class ChecklistTasksSeeder extends Seeder
         ];
 
         foreach ($tasks as $task) {
-            ChecklistTask::updateOrCreate(
+            ChecklistTasks::updateOrCreate(
                 ['title' => $task['title']],
                 $task
             );

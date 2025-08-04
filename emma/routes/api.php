@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\{
     EmployeeController,
     DepartmentController,
+    ChecklistTasksController,
+    OnboardingChecklistController,
+    EmployeeChecklistStatusController,
     SalaryController,
     AbsenceController,
     TagController,
@@ -18,7 +20,9 @@ use App\Http\Controllers\{
     IncidentController,
     LeaveController,
     ReportController,
-    AuthorizedEmailController
+    AuthorizedEmailController,
+    ChecklistTemplateController,
+    EmployeeChecklistController
 };
 
 
@@ -27,7 +31,7 @@ Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirectToGoo
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 
 // ROTA PARA TESTAR LOGIN COM TOKEN (após salvar localmente)
-Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
@@ -48,10 +52,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('incidents', IncidentController::class);
     
     //Checklist
-    Route::apiResource('checklist-tasks', ChecklistTaskController::class);
+    Route::apiResource('checklist-tasks', ChecklistTasksController::class);
     Route::get('employees/{employee}/onboarding-checklist', [OnboardingChecklistController::class, 'show']);
     Route::put('employee-checklist-status/{employeeChecklistStatus}', [EmployeeChecklistStatusController::class, 'update']);
-    
+    Route::apiResource('checklist-templates', ChecklistTemplateController::class);
+    Route::apiResource('employee-checklists', EmployeeChecklistController::class);
+    Route::get('/employees/{id}/checklists', [EmployeeChecklistController::class, 'index']);
+    Route::get('/employee-checklists/{id}', [EmployeeChecklistController::class, 'show']);
+    Route::patch('/employee-checklists/{employeeChecklist}/items/{itemId}', [EmployeeChecklistController::class, 'updateItemStatus']);
+    Route::post('/employees/{employee}/checklists', [EmployeeChecklistController::class, 'assign']);
+    Route::patch('/employee-checklists/{checklist}/items/{item}/toggle', [EmployeeChecklistController::class, 'toggleItem']);
+
+
     // Salários
     Route::get('employees/{employee}/salaries', [SalaryController::class, 'show']);
     Route::post('employees/{employee}/salaries', [SalaryController::class, 'store']);

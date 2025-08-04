@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
 
-            $table->unique(['onboarding_checklist_id', 'checklist_task_id']); // evitar duplicidade
+            $table->unique(['onboarding_checklist_id', 'checklist_task_id'], 'onboarding_task_unique'); // evitar duplicidade
         });
     }
 

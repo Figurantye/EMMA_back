@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('checklist_tasks', function (Blueprint $table) {
+        Schema::create('checklist_template_items', function (Blueprint $table) {
             $table->id();
-            $table->string('title');           // nome da tarefa
-            $table->integer('order')->default(0); // ordem de exibição
-            $table->text('description')->nullable(); // descrição opcional
+            $table->foreignId('checklist_template_id')->constrained()->onDelete('cascade');
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->unsignedInteger('order')->default(0); // Para ordenação
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('checklist_tasks');
+        Schema::dropIfExists('checklist_template_items');
     }
 };
