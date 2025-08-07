@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
             $table->foreignId('checklist_template_id')->constrained()->cascadeOnDelete();
-            $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
             $table->timestamps();
+            $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
         });
     }
 
