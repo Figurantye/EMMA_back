@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CalculateEmployeeRequest;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -140,5 +142,47 @@ class EmployeeController extends Controller
             'success' => false,
             'msg' => 'Employee deleted successfully',
         ], 201);
+    }
+
+    // ... existing code ...
+    public function calculate(CalculateEmployeeRequest $request, Employee $employee)
+    {
+        $admissionDate = Carbon::parse($employee->hired_at);
+        $exitDate = Carbon::parse($request->input('termination_date'));
+        $baseSalary = $employee->salary?->amount ?? 0;
+
+        if ($baseSalary === 0) {
+            return response()->json(['error' => 'Base salary not found.'], 422);
+        }
+
+        // Days worked in the month of departure
+        $daysWorked = $exitDate->day;
+        $salaryBalance = ($baseSalary / 30) * $daysWorked;
+
+        // Proportional 13th salary
+        $monthsWorkedInYear = $exitDate->month - 1;
+        $thirteenthSalary = ($baseSalary * $monthsWorkedInYear) / 12;
+
+        // Expired vacation (assuming a simplified method or rule)
+        $expiredVacationDays = 0;
+        $proportionalVacationDays = $monthsWorkedInYear;
+
+        $expiredVacation = ($baseSalary / 30) * $expiredVacationDays;
+        $proportionalVacation = ($baseSalary * $proportionalVacationDays) / 12;
+        $constitutionalThird = ($expiredVacation + $proportionalVacation) / 3;
+
+        $priorNotice = $request->boolean('paid_notice') ? $baseSalary : 0;
+
+        $total = $salaryBalance + $expiredVacation + $proportionalVacation + $constitutionalThird + $thirteenthSalary + $priorNotice;
+
+        return response()->json([
+            'salary_balance' => round($salaryBalance, 2),
+            'expired_vacation' => round($expiredVacation, 2),
+            'proportional_vacation' => round($proportionalVacation, 2),
+            'constitutional_third' => round($constitutionalThird, 2),
+            'thirteenth_salary' => round($thirteenthSalary, 2),
+            'prior_notice' => round($priorNotice, 2),
+            'total' => round($total, 2),
+        ]);
     }
 }

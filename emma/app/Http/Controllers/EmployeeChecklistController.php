@@ -41,7 +41,7 @@ class EmployeeChecklistController extends Controller
         $employeeChecklist = EmployeeChecklist::create([
             'employee_id' => $employeeId,
             'checklist_template_id' => $template->id,
-            'status' => 'not_started',
+            'status' => 'pending',
             'progress' => 0,
         ]);
 

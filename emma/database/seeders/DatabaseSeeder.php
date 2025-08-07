@@ -33,17 +33,10 @@ class DatabaseSeeder extends Seeder
         ]);
         */
 
-        // Seed de e-mails autorizados
-        $this->call([
-            AuthorizedEmailsSeeder::class,
-            ChecklistTemplateSeeder::class,
-        ChecklistTemplateItemSeeder::class,
-        EmployeeChecklistSeeder::class,
-        EmployeeChecklistItemSeeder::class,
-    ]);
+        
 
         // Adicione estes se estiver usando o checklist de admissão
- 
+
 
         Department::factory(3)->create()->each(function ($department) {
             Position::factory(2)->create([
@@ -90,5 +83,14 @@ class DatabaseSeeder extends Seeder
                 });
             });
         });
+        // Seed de e-mails autorizados
+        $this->call([
+            AuthorizedEmailsSeeder::class,
+            ChecklistTemplateSeeder::class,
+            ChecklistTemplateItemSeeder::class,
+            EmployeeChecklistSeeder::class,
+            EmployeeChecklistItemSeeder::class,
+        ]);
     }
+    
 }

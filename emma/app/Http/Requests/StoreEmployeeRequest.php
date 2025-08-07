@@ -34,6 +34,10 @@ class StoreEmployeeRequest extends FormRequest
             'phone' => ['nullable', 'string', 'max:255', 'regex:/^[\d\s\-\+\(\)]+$/'],
             'employment_status' => ['required', Rule::in(['active', 'inactive', 'suspended'])],
             'position_id' => ['required', Rule::exists('positions', 'id')],
+            'termination_date' => ['nullable', 'date', 'required_if:employment_status,terminated'],
+            'termination_type' => ['nullable', 'string', 'in:voluntary,involuntary', 'required_if:employment_status,terminated'],
+            'termination_reason' => ['nullable', 'string', 'required_if:employment_status,terminated'],
+            'notice_paid' => ['nullable', 'boolean', 'required_if:employment_status,terminated'],
         ];
     }
 
@@ -51,6 +55,10 @@ class StoreEmployeeRequest extends FormRequest
             'position_id.exists' => 'The selected position does not exist',
             'hired_at.before_or_equal' => 'HIRED_AT cannot be in the future',
             'status.in' => 'STATUS must be: active, inactive or suspended',
+            'termination_date.required_if' => 'TERMINATION_DATE is required when the status is terminated',
+            'termination_type.required_if' => 'TERMINATION_TYPE is required when the status is terminated',
+            'termination_reason.required_if' => 'TERMINATION_REASON is required when the status is terminated',
+            'notice_paid.required_if' => 'NOTICE_PAID is required when the status is terminated',
         ];
     }
 }

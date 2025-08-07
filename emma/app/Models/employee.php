@@ -15,8 +15,7 @@ class Employee extends Model
     protected $connection = 'mysql';
 
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'phone', 'cpf', 'rg',
-        'date_of_birth', 'hire_date', 'position_id', 'employment_status', 'absence', 'description', 'city'
+        'first_name', 'last_name', 'email', 'phone', 'cpf', 'rg', 'date_of_birth', 'hire_date', 'position_id', 'employment_status', 'absence', 'description', 'city', 'termination_date', 'termination_type', 'termination_reason', 'notice_paid',
     ];
 
     public function position()

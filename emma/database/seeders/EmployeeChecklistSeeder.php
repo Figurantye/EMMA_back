@@ -12,7 +12,7 @@ class EmployeeChecklistSeeder extends Seeder
         EmployeeChecklist::insert([
             [
                 'employee_id' => 1,
-                'template_id' => 1,
+                'checklist_template_id' => 1,
                 'status' => 'in_progress',
                 'progress' => 33,
                 'created_at' => now(),
@@ -20,12 +20,12 @@ class EmployeeChecklistSeeder extends Seeder
             ],
             [
                 'employee_id' => 2,
-                'template_id' => 2,
-                'status' => 'not_started',
+                'checklist_template_id' => 2,
+                'status' => 'pending',
                 'progress' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ]);
     }
 }
