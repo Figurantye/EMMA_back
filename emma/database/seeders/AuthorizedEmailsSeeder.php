@@ -14,7 +14,7 @@ class AuthorizedEmailsSeeder extends Seeder
     public function run(): void
     {
         AuthorizedEmail::firstOrCreate([
-            'email' => 'wazlawickgustavo8@gmail.com' // seu email principal
+            'email' => 'eva01.gustavo@gmail.com' // seu email principal
         ]);
     }
 }

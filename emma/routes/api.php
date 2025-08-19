@@ -22,35 +22,36 @@ use App\Http\Controllers\{
     ReportController,
     AuthorizedEmailController,
     ChecklistTemplateController,
-    EmployeeChecklistController
+    EmployeeChecklistController,
+    AuthController
 };
 
 
-// ROTAS DE AUTENTICAÇÃO GOOGLE
-Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle']);
-Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
+// Google Authentication Routes
+Route::prefix('auth')->group(function () {
+    Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
+    Route::get('google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
+    Route::post('/auth/register/google', [AuthController::class, 'registerFromGoogle']);
 
-// ROTA PARA TESTAR LOGIN COM TOKEN (após salvar localmente)
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
 });
 
-Route::post('/logout', function (Request $request) {
+// Logout Route
+Route::post('logout', function (Request $request) {
     $request->user()->currentAccessToken()->delete();
-    return response()->json(['message' => 'Logout realizado com sucesso.']);
+    return response()->json(['message' => 'Logout successful.']);
 })->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    
+
     // Dashboard
     Route::get('dashboard', [DashboardController::class, 'index']);
-    
+
     // Recursos principais
     Route::apiResource('employees', EmployeeController::class);
     Route::apiResource('departments', DepartmentController::class);
     Route::apiResource('positions', PositionController::class);
     Route::apiResource('incidents', IncidentController::class);
-    
+
     //Checklist
     Route::apiResource('checklist-tasks', ChecklistTasksController::class);
     Route::get('employees/{employee}/onboarding-checklist', [OnboardingChecklistController::class, 'show']);
@@ -63,6 +64,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/employees/{employee}/checklists', [EmployeeChecklistController::class, 'assign']);
     Route::patch('/employee-checklists/{checklist}/items/{item}/toggle', [EmployeeChecklistController::class, 'toggleItem']);
 
+    // Calculate
+    Route::post('/employees/{employee}/calculate', [EmployeeController::class, 'calculate'])->name('employees.calculate');
 
     // Salários
     Route::get('employees/{employee}/salaries', [SalaryController::class, 'show']);

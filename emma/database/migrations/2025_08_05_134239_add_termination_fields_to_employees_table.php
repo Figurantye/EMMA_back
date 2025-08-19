@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('termination_reason')->nullable()->after('termination_type');
             $table->boolean('notice_paid')->default(false)->after('termination_reason');
             $table->decimal('severance_amount', 10, 2)->nullable();
+            $table->date('last_vacation_date')->nullable()->after('severance_amount');
         });
     }
 

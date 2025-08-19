@@ -110,45 +110,45 @@ class DashboardController extends Controller
         foreach ($employees as $emp) {
             $activities[] = [
                 'type' => 'employee_created',
-                'message' => "Novo funcionário admitido: {$emp->first_name} {$emp->last_name}",
+                'message' => "new employee hired: {$emp->first_name} {$emp->last_name}",
                 'created_at' => $emp->created_at,
             ];
         }
 
-        // Licenças aprovadas
+        // Leaves approved
         $leaves = Leave::where('status', 'approved')->latest()->take(5)->get();
         foreach ($leaves as $leave) {
             $emp = $leave->employee;
             $activities[] = [
                 'type' => 'leave_approved',
-                'message' => "Licença aprovada para {$emp->first_name} ({$leave->type})",
+                'message' => "leave approved for {$emp->first_name} ({$leave->type})",
                 'created_at' => $leave->created_at,
             ];
         }
 
-        // Documentos adicionados
+        // Documents added
         $docs = Document::latest()->take(5)->get();
         foreach ($docs as $doc) {
             $emp = $doc->employee;
             $activities[] = [
                 'type' => 'document_added',
-                'message' => "Novo documento anexado a {$emp->first_name}: {$doc->name}",
+                'message' => "New document added by {$emp->first_name}: {$doc->name}",
                 'created_at' => $doc->created_at,
             ];
         }
 
-        // Ausências
+        // Absences
         $absences = Absence::latest()->take(5)->get();
         foreach ($absences as $abs) {
             $emp = $abs->employee;
             $activities[] = [
                 'type' => 'absence_logged',
-                'message' => "Ausência registrada para {$emp->first_name}: {$abs->reason}",
+                'message' => "Absence logged for {$emp->first_name}: {$abs->reason}",
                 'created_at' => $abs->created_at,
             ];
         }
 
-        // Ordenar tudo por data
+        // Sort everything by date
         return collect($activities)->sortByDesc('created_at')->values()->take(10);
     }
 

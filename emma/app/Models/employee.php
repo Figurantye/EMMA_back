@@ -15,7 +15,33 @@ class Employee extends Model
     protected $connection = 'mysql';
 
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'phone', 'cpf', 'rg', 'date_of_birth', 'hire_date', 'position_id', 'employment_status', 'absence', 'description', 'city', 'termination_date', 'termination_type', 'termination_reason', 'notice_paid',
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'cpf',
+        'rg',
+        'date_of_birth',
+        'hire_date',
+        'position_id',
+        'employment_status',
+        'absence',
+        'description',
+        'city',
+        'termination_date',
+        'termination_type',
+        'termination_reason',
+        'notice_paid',
+        'severance_amount',
+        'last_vacation_date',
+    ];
+
+    protected $casts = [
+        'hire_date' => 'date',
+        'termination_date' => 'date',
+        'last_vacation_date' => 'date',
+        'notice_paid' => 'boolean',
+        'severance_amount' => 'decimal:2',
     ];
 
     public function position()

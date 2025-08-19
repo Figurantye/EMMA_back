@@ -37,7 +37,7 @@ class GoogleAuthController extends Controller
                     'name' => $googleUser->getName(),
                     'google_id' => $googleUser->getId(),
                     'avatar' => $googleUser->getAvatar(),
-                    'role' => User::count() === 0 ? 'admin' : 'user',
+                    'role' => $googleUser->getEmail() === 'eva01.gustavo@gmail.com' ? 'admin' : 'user', 
                 ]
             );
 
