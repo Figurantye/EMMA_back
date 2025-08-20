@@ -15,8 +15,8 @@ class GoogleAuthController extends Controller
 {
     public function redirectToGoogle()
     {
-        Log::info('Redirecionando para Google...');
-        return Socialite::driver('google')->redirect(); // NÃO use stateless
+        Log::info('redirecting to Google...');
+        return Socialite::driver('google')->redirect(); 
     }
 
     public function handleGoogleCallback(Request $request)
@@ -27,10 +27,9 @@ class GoogleAuthController extends Controller
             $authorized = AuthorizedEmail::where('email', $googleUser->getEmail())->exists();
 
             if (!$authorized) {
-                return response()->json(['message' => 'E-mail não autorizado.'], 403);
+                return response()->json(['message' => 'Unauthorized email.'], 403);
             }
             
-            // Cria ou atualiza o usuário
             $user = User::updateOrCreate(
                 ['email' => $googleUser->getEmail()],
                 [
@@ -41,11 +40,9 @@ class GoogleAuthController extends Controller
                 ]
             );
 
-            // Autentica e gera token Sanctum
             Auth::login($user);
             $token = $user->createToken('authToken')->plainTextToken;
 
-            // Retorna apenas os dados públicos necessários
             $safeUser = [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -53,11 +50,11 @@ class GoogleAuthController extends Controller
                 'role' => $user->role,
             ];
 
-            return redirect()->away("http://localhost:5173/google/callback?token={$token}&user=" . urlencode(json_encode($safeUser)));
+            return redirect()->away("http://emmahr.vercel.app/google/callback?token={$token}&user=" . urlencode(json_encode($safeUser)));
 
         } catch (\Exception $e) {
             \Log::error("Erro Google Login: " . $e->getMessage());
-            return redirect()->away("http://localhost:5173/login?error=google_auth_failed");
+            return redirect()->away("http://emmahr.vercel.app/login?error=google_auth_failed");
         }
     }
 
@@ -71,7 +68,7 @@ class GoogleAuthController extends Controller
         $googleUser = session('google_user');
 
         if (!$googleUser) {
-            return response()->json(['error' => 'Sessão expirada.'], 419);
+            return response()->json(['error' => 'Session expired.'], 419);
         }
 
         $user = User::create([
