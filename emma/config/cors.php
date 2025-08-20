@@ -3,7 +3,7 @@
 return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie', 'auth/google/*', 'logout'],
-    'allowed_origins' => ['https://emmahr.vercel.app/'],
+    'allowed_origins' => ['https://emmahr.vercel.app'],
     'allowed_headers' => ['*'],
     'allowed_methods' => ['*'],
     'supports_credentials' => true,
