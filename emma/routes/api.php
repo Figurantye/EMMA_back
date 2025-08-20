@@ -29,7 +29,7 @@ use App\Http\Controllers\{
 
 // Google Authentication Routes
 Route::prefix('auth')->group(function () {
-    Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
+    Route::get('/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
     Route::get('google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
     Route::post('/auth/register/google', [AuthController::class, 'registerFromGoogle']);
 
